@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-01-30T17:45:01.989088",
-  "memories": 113,
+  "timestamp": "2026-01-30T17:51:07.394187",
+  "memories": 119,
   "tasks": 0,
   "emailsIn": 2,
   "emailsOut": 1,
@@ -18,27 +18,27 @@
   },
   "recentActivity": [
     {
-      "time": "17:45",
+      "time": "17:51",
       "action": "1. Comprehensive Logging System Implemented"
     },
     {
-      "time": "17:45",
+      "time": "17:51",
       "action": "Created `conversation_logger.py` with 4-layer architecture"
     },
     {
-      "time": "17:45",
+      "time": "17:51",
       "action": "**JSONL files**: Exact conversation logs"
     },
     {
-      "time": "17:45",
+      "time": "17:51",
       "action": "**Vector DB**: Semantic search (103 memories)"
     },
     {
-      "time": "17:45",
+      "time": "17:51",
       "action": "**Daily summaries**: Human-readable"
     },
     {
-      "time": "17:45",
+      "time": "17:51",
       "action": "**MEMORY.md**: Curated long-term"
     }
   ],
@@ -46,5 +46,172 @@
     "name": "tars-dashboard",
     "url": "tars-dashboard.devsharsha.live",
     "time": "17:31"
-  }
+  },
+  "activeJobs": [
+    {
+      "name": "Daily Traffic Report",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Pulse Check",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Pulse Check",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Pulse Check",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Pulse Check",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Pulse Check",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Pulse Check",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Pulse Check",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Pulse Check",
+      "status": "SCHEDULED"
+    },
+    {
+      "name": "Dashboard Metrics Sync",
+      "status": "RUNNING"
+    }
+  ],
+  "recentLogs": [
+    {
+      "time": "17:46",
+      "type": "success",
+      "message": "Dashboard updated with operations view"
+    },
+    {
+      "time": "17:45",
+      "type": "info",
+      "message": "Git push: 6 files changed"
+    },
+    {
+      "time": "17:44",
+      "type": "info",
+      "message": "Build started: tars-dashboard"
+    },
+    {
+      "time": "17:40",
+      "type": "success",
+      "message": "Coolify deployment triggered"
+    },
+    {
+      "time": "17:35",
+      "type": "info",
+      "message": "Chat feature removed"
+    },
+    {
+      "time": "17:30",
+      "type": "success",
+      "message": "Metrics collected: 107 memories"
+    }
+  ],
+  "recentMemories": [
+    {
+      "time": "17:46",
+      "text": "Removed chat feature from dashboard"
+    },
+    {
+      "time": "17:35",
+      "text": "Chat bar added to dashboard"
+    },
+    {
+      "time": "17:22",
+      "text": "Deployed TARS E-ink Dashboard"
+    },
+    {
+      "time": "17:15",
+      "text": "Created dashboard repository"
+    },
+    {
+      "time": "17:05",
+      "text": "Updated subdomain registry with 12 domains"
+    }
+  ],
+  "resources": [
+    {
+      "name": "Memory",
+      "percentage": 28
+    },
+    {
+      "name": "Disk",
+      "percentage": 31
+    },
+    {
+      "name": "CPU Load",
+      "percentage": 0
+    }
+  ],
+  "integrations": [
+    {
+      "type": "telegram",
+      "name": "Telegram Bot",
+      "status": "online",
+      "statusText": "ACTIVE",
+      "lastActivity": "Live"
+    },
+    {
+      "type": "gmail",
+      "name": "Gmail API",
+      "status": "online",
+      "statusText": "ACTIVE",
+      "lastActivity": "1m ago"
+    },
+    {
+      "type": "coolify",
+      "name": "Coolify API",
+      "status": "online",
+      "statusText": "CONNECTED",
+      "lastActivity": "Live"
+    },
+    {
+      "type": "twitter",
+      "name": "Twitter/X API",
+      "status": "warning",
+      "statusText": "LIMITED",
+      "lastActivity": "Rate limit"
+    }
+  ],
+  "recentCommands": [
+    {
+      "time": "17:46",
+      "command": "clawdbot tui",
+      "status": "success"
+    },
+    {
+      "time": "16:44",
+      "command": "clawdbot status",
+      "status": "success"
+    },
+    {
+      "time": "15:42",
+      "command": "clawdbot tui",
+      "status": "success"
+    },
+    {
+      "time": "14:40",
+      "command": "clawdbot tui",
+      "status": "success"
+    },
+    {
+      "time": "13:38",
+      "command": "clawdbot gateway restart",
+      "status": "success"
+    }
+  ]
 }
