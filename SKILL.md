@@ -26,7 +26,6 @@ A minimalist, high-contrast dashboard designed for e-ink displays. Shows TARS st
 - 📝 **Activity log** - Recent actions
 - 🔄 **Auto-refresh** - Every 5 minutes + manual button
 - 👤 **Premium TARS avatar** - Detailed bot character design
-- 💬 **Chat bar** - Message TARS directly from dashboard
 
 ## Access
 
