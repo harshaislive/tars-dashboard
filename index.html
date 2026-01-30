@@ -317,6 +317,114 @@
             </div>
         </section>
 
+        <!-- Copy Lab Section -->
+        <section class="copylab-section">
+            <h2 class="section-title">
+                <span class="title-icon">✎</span>
+                Copy Lab
+                <span class="section-badge" id="copy-count">0 drafts</span>
+            </h2>
+            
+            <!-- Copy Stats -->
+            <div class="copy-stats-bar">
+                <div class="copy-stat">
+                    <span class="cs-number" id="total-snippets">0</span>
+                    <span class="cs-label">Total Snippets</span>
+                </div>
+                <div class="copy-stat">
+                    <span class="cs-number" id="draft-count">0</span>
+                    <span class="cs-label">Drafts</span>
+                </div>
+                <div class="copy-stat">
+                    <span class="cs-number" id="posted-count">0</span>
+                    <span class="cs-label">Posted</span>
+                </div>
+                <div class="copy-stat">
+                    <span class="cs-number" id="avg-engagement">0%</span>
+                    <span class="cs-label">Avg Engagement</span>
+                </div>
+            </div>
+
+            <!-- Latest Copy Snippet -->
+            <div class="copy-snippet-card" id="latest-copy">
+                <div class="copy-header">
+                    <span class="copy-type">DRAFT</span>
+                    <span class="copy-score">Engagement: --%</span>
+                </div>
+                <div class="copy-content">
+                    <p class="copy-text">Generating copy...</p>
+                </div>
+                <div class="copy-justification">
+                    <h4>Why This Works:</h4>
+                    <p>Loading justification...</p>
+                </div>
+                <div class="copy-trends">
+                    <h4>Trends Used:</h4>
+                    <ul>
+                        <li>Researching trending topics...</li>
+                    </ul>
+                </div>
+                <div class="copy-actions">
+                    <button class="btn btn-copy" onclick="copySnippet()">📋 COPY TEXT</button>
+                    <button class="btn btn-generate" onclick="generateNew()">✨ GENERATE NEW</button>
+                </div>
+            </div>
+
+            <!-- LinkedIn Post Tracker -->
+            <div class="linkedin-tracker">
+                <h3 class="tracker-title">
+                    <span class="title-icon">💼</span>
+                    LinkedIn Performance Tracker
+                </h3>
+                <div class="tracker-table" id="linkedin-posts">
+                    <div class="tracker-header">
+                        <span>Date</span>
+                        <span>Type</span>
+                        <span>Likes</span>
+                        <span>Comments</span>
+                        <span>Shares</span>
+                        <span>Score</span>
+                    </div>
+                    <div class="tracker-row empty">
+                        <span colspan="6">No LinkedIn posts tracked yet</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learning Insights -->
+            <div class="learning-insights">
+                <h3 class="insights-title">
+                    <span class="title-icon">🧠</span>
+                    Learning Insights
+                </h3>
+                <div class="insights-grid" id="insights-data">
+                    <div class="insight-card">
+                        <h4>Best Performing Patterns</h4>
+                        <ul id="high-patterns">
+                            <li>Collecting data...</li>
+                        </ul>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Optimal Posting Times</h4>
+                        <ul id="optimal-times">
+                            <li>09:00 IST</li>
+                            <li>12:00 IST</li>
+                            <li>17:00 IST</li>
+                        </ul>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Top Hashtags</h4>
+                        <ul id="top-hashtags">
+                            <li>#10Percent</li>
+                            <li>#SustainableLiving</li>
+                            <li>#Permaculture</li>
+                            <li>#CommunityFirst</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Activity Feed -->
         <section class="activity-section">
             <h2 class="section-title">
