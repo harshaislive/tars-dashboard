@@ -159,14 +159,14 @@ async function fetchData() {
 // Get mock data (for testing)
 function getMockData() {
     return {
-        memories: 103,
-        tasks: 5,
+        memories: 107,
+        tasks: 0,
         emailsIn: 2,
         emailsOut: 1,
-        skills: 13,
+        skills: 16,
         subdomains: 12,
-        deployments: 2,
-        uptime: 390,
+        deployments: 12,
+        uptime: 760,
         systemStatus: {
             memoryDb: 'online',
             coolifyApi: 'online',
@@ -176,17 +176,57 @@ function getMockData() {
             ga4Analytics: 'online'
         },
         recentActivity: [
-            { time: '17:22', action: 'Deployed TARS E-ink Dashboard to production' },
+            { time: '17:46', action: 'Removed chat feature from dashboard' },
+            { time: '17:45', action: 'Deployed updated dashboard to production' },
+            { time: '17:35', action: 'Added chat bar to dashboard' },
+            { time: '17:22', action: 'Deployed TARS E-ink Dashboard v1.0' },
             { time: '17:15', action: 'Created tars-dashboard GitHub repository' },
-            { time: '17:05', action: 'Finalized coolify-deploy skill with 12 subdomains' },
-            { time: '16:59', action: 'Deployed brutalist landing page successfully' },
-            { time: '16:45', action: 'Connected Coolify API and GitHub SSH' },
-            { time: '15:30', action: 'Updated comprehensive logging system' }
+            { time: '17:05', action: 'Finalized coolify-deploy skill with 12 subdomains' }
+        ],
+        // Live Operations Data
+        activeJobs: [
+            { name: 'Memory Sync', status: 'RUNNING' },
+            { name: 'Daily Traffic Report', status: 'SCHEDULED' },
+            { name: 'Pulse Check', status: 'SCHEDULED' },
+            { name: 'Hourly Touch-Base', status: 'SCHEDULED' }
+        ],
+        recentLogs: [
+            { time: '17:46', type: 'success', message: 'Dashboard deployed successfully' },
+            { time: '17:45', type: 'info', message: 'Git push: 6 files changed, 8 insertions(+)' },
+            { time: '17:44', type: 'info', message: 'Build started: tars-dashboard' },
+            { time: '17:40', type: 'success', message: 'Coolify deployment triggered' },
+            { time: '17:35', type: 'success', message: 'Chat feature added' },
+            { time: '17:30', type: 'info', message: 'Metrics collected: 107 memories' }
+        ],
+        recentMemories: [
+            { time: '17:46', text: 'Removed chat feature from dashboard' },
+            { time: '17:35', text: 'Chat bar added to dashboard' },
+            { time: '17:22', text: 'Deployed TARS E-ink Dashboard' },
+            { time: '17:15', text: 'Created dashboard repository' },
+            { time: '17:05', text: 'Updated subdomain registry' }
+        ],
+        resources: [
+            { name: 'Memory DB', percentage: 45 },
+            { name: 'Disk Usage', percentage: 62 },
+            { name: 'CPU Load', percentage: 23 }
+        ],
+        integrations: [
+            { type: 'telegram', name: 'Telegram Bot', status: 'online', statusText: 'ACTIVE', lastActivity: '2s ago' },
+            { type: 'gmail', name: 'Gmail API', status: 'online', statusText: 'ACTIVE', lastActivity: '1m ago' },
+            { type: 'coolify', name: 'Coolify API', status: 'online', statusText: 'CONNECTED', lastActivity: 'Live' },
+            { type: 'twitter', name: 'Twitter/X API', status: 'warning', statusText: 'LIMITED', lastActivity: 'Rate limit' }
+        ],
+        recentCommands: [
+            { time: '17:46:12', command: 'git push origin main', status: 'success' },
+            { time: '17:45:45', command: 'rm api/chat.py', status: 'success' },
+            { time: '17:44:30', command: 'coolify-deploy deploy tars-dashboard', status: 'success' },
+            { time: '17:35:18', command: 'python3 collect-metrics.py', status: 'success' },
+            { time: '17:30:05', command: 'git commit -m "Add chat bar"', status: 'success' }
         ],
         lastDeployment: {
             name: 'tars-dashboard',
             url: 'tars-dashboard.devsharsha.live',
-            time: '17:22'
+            time: '17:46'
         }
     };
 }
@@ -207,6 +247,15 @@ function updateDashboard(data) {
     
     // Activity feed
     updateActivity(data.recentActivity);
+    
+    // Operations
+    updateOperations(data);
+    
+    // Integrations
+    updateIntegrations(data.integrations);
+    
+    // Commands
+    updateCommands(data.recentCommands);
     
     // Last deployment
     if (data.lastDeployment) {
@@ -298,6 +347,92 @@ document.addEventListener('visibilitychange', () => {
         loadData();
     }
 });
+
+// Update operations section
+function updateOperations(data) {
+    // Active Jobs
+    const jobsContainer = document.getElementById('active-jobs');
+    if (jobsContainer && data.activeJobs) {
+        jobsContainer.innerHTML = data.activeJobs.map(job => `
+            <div class="ops-item">
+                <span class="ops-name">${job.name}</span>
+                <span class="ops-status ${job.status.toLowerCase()}">${job.status}</span>
+            </div>
+        `).join('');
+    }
+    
+    // Recent Logs
+    const logsContainer = document.getElementById('recent-logs');
+    if (logsContainer && data.recentLogs) {
+        logsContainer.innerHTML = data.recentLogs.map(log => `
+            <div class="log-entry ${log.type}">
+                <span class="log-time">${log.time}</span>
+                <span class="log-msg">${log.message}</span>
+            </div>
+        `).join('');
+    }
+    
+    // Recent Memories
+    const memContainer = document.getElementById('recent-memories');
+    if (memContainer && data.recentMemories) {
+        memContainer.innerHTML = data.recentMemories.map(mem => `
+            <div class="memory-item">
+                <span class="mem-time">${mem.time}</span>
+                <span class="mem-text" title="${mem.text}">${mem.text}</span>
+            </div>
+        `).join('');
+    }
+    
+    // System Resources
+    const resContainer = document.getElementById('system-resources');
+    if (resContainer && data.resources) {
+        resContainer.innerHTML = data.resources.map(res => `
+            <div class="resource-item">
+                <span class="res-label">${res.name}</span>
+                <div class="res-bar"><div class="res-fill" style="width: ${res.percentage}%"></div></div>
+                <span class="res-value">${res.percentage}%</span>
+            </div>
+        `).join('');
+    }
+}
+
+// Update integrations/webhooks
+function updateIntegrations(integrations) {
+    const container = document.getElementById('integration-status');
+    if (!container || !integrations) return;
+    
+    const icons = {
+        telegram: '📱',
+        gmail: '📧',
+        coolify: '📊',
+        twitter: '🐦',
+        github: '⚡',
+        pipedrive: '💼'
+    };
+    
+    container.innerHTML = integrations.map(int => `
+        <div class="webhook-item ${int.status}">
+            <span class="wh-icon">${icons[int.type] || '◈'}</span>
+            <span class="wh-name">${int.name}</span>
+            <span class="wh-status">${int.statusText}</span>
+            <span class="wh-last">${int.lastActivity}</span>
+        </div>
+    `).join('');
+}
+
+// Update recent commands
+function updateCommands(commands) {
+    const container = document.getElementById('recent-commands');
+    if (!container || !commands) return;
+    
+    container.innerHTML = commands.map(cmd => `
+        <div class="command-item">
+            <span class="cmd-time">${cmd.time}</span>
+            <code class="cmd-code">${cmd.command}</code>
+            <span class="cmd-status ${cmd.status}">${cmd.status === 'success' ? '✓' : '✗'}</span>
+        </div>
+    `).join('');
+}
 
 // Handle beforeunload
 document.addEventListener('beforeunload', () => {

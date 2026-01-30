@@ -189,6 +189,134 @@
             </div>
         </section>
 
+        <!-- Real-Time Operations Grid -->
+        <section class="ops-section">
+            <h2 class="section-title">
+                <span class="title-icon">◉</span>
+                Live Operations
+            </h2>
+            <div class="ops-grid">
+                <div class="ops-card">
+                    <h3>🔄 Active Jobs</h3>
+                    <div class="ops-content" id="active-jobs">
+                        <div class="ops-item">
+                            <span class="ops-name">Memory Sync</span>
+                            <span class="ops-status running">RUNNING</span>
+                        </div>
+                        <div class="ops-item">
+                            <span class="ops-name">Daily Traffic Report</span>
+                            <span class="ops-status scheduled">23:59</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ops-card">
+                    <h3>📝 Recent Logs</h3>
+                    <div class="ops-content log-scroll" id="recent-logs">
+                        <div class="log-entry info">
+                            <span class="log-time">17:45</span>
+                            <span class="log-msg">Dashboard deployed successfully</span>
+                        </div>
+                        <div class="log-entry success">
+                            <span class="log-time">17:44</span>
+                            <span class="log-msg">Git push: 6 files changed</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ops-card">
+                    <h3>🧠 Recent Memories</h3>
+                    <div class="ops-content" id="recent-memories">
+                        <div class="memory-item">
+                            <span class="mem-time">17:40</span>
+                            <span class="mem-text">Removed chat feature from dashboard</span>
+                        </div>
+                        <div class="memory-item">
+                            <span class="mem-time">17:35</span>
+                            <span class="mem-text">Chat bar added to dashboard</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ops-card">
+                    <h3>💻 System Resources</h3>
+                    <div class="ops-content" id="system-resources">
+                        <div class="resource-item">
+                            <span class="res-label">Memory DB</span>
+                            <div class="res-bar"><div class="res-fill" style="width: 45%"></div></div>
+                            <span class="res-value">45%</span>
+                        </div>
+                        <div class="resource-item">
+                            <span class="res-label">Disk Usage</span>
+                            <div class="res-bar"><div class="res-fill" style="width: 62%"></div></div>
+                            <span class="res-value">62%</span>
+                        </div>
+                        <div class="resource-item">
+                            <span class="res-label">CPU Load</span>
+                            <div class="res-bar"><div class="res-fill" style="width: 23%"></div></div>
+                            <span class="res-value">23%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Webhook Status -->
+        <section class="webhook-section">
+            <h2 class="section-title">
+                <span class="title-icon">◆</span>
+                Integration Status
+            </h2>
+            <div class="webhook-grid" id="integration-status">
+                <div class="webhook-item online">
+                    <span class="wh-icon">📱</span>
+                    <span class="wh-name">Telegram Webhook</span>
+                    <span class="wh-status">ACTIVE</span>
+                    <span class="wh-last">2s ago</span>
+                </div>
+                <div class="webhook-item online">
+                    <span class="wh-icon">📧</span>
+                    <span class="wh-name">Gmail Webhook</span>
+                    <span class="wh-status">ACTIVE</span>
+                    <span class="wh-last">1m ago</span>
+                </div>
+                <div class="webhook-item online">
+                    <span class="wh-icon">📊</span>
+                    <span class="wh-name">Coolify API</span>
+                    <span class="wh-status">CONNECTED</span>
+                    <span class="wh-last">Live</span>
+                </div>
+                <div class="webhook-item warning">
+                    <span class="wh-icon">🐦</span>
+                    <span class="wh-name">Twitter/X API</span>
+                    <span class="wh-status">LIMITED</span>
+                    <span class="wh-last">Rate limit</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Commands -->
+        <section class="commands-section">
+            <h2 class="section-title">
+                <span class="title-icon">▶</span>
+                Recent Commands
+            </h2>
+            <div class="commands-list" id="recent-commands">
+                <div class="command-item">
+                    <span class="cmd-time">17:45:22</span>
+                    <code class="cmd-code">git push origin main</code>
+                    <span class="cmd-status success">✓</span>
+                </div>
+                <div class="command-item">
+                    <span class="cmd-time">17:44:15</span>
+                    <code class="cmd-code">coolify-deploy deploy --repo tars-dashboard</code>
+                    <span class="cmd-status success">✓</span>
+                </div>
+                <div class="command-item">
+                    <span class="cmd-time">17:35:08</span>
+                    <code class="cmd-code">python3 api/collect-metrics.py</code>
+                    <span class="cmd-status success">✓</span>
+                </div>
+            </div>
+        </section>
+
         <!-- Activity Feed -->
         <section class="activity-section">
             <h2 class="section-title">
