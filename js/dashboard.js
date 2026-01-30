@@ -89,6 +89,7 @@ function initializeDashboard() {
     startAutoRefresh();
     updateTime();
     startUptimeCounter();
+    loadChatHistory();
     
     // Update time every minute
     setInterval(updateTime, 60000);
@@ -306,7 +307,13 @@ document.addEventListener('beforeunload', () => {
 
 // ========== CHAT FUNCTIONS ==========
 
-// Send message to TARS
+// Telegram bot configuration
+const TELEGRAM_CONFIG = {
+    botUsername: 'TARS_ClawdBot',
+    chatId: '8260725312'  // Harsha's Telegram ID
+};
+
+// Send message to TARS via Telegram
 async function sendMessage() {
     const input = document.getElementById('chat-input');
     const status = document.getElementById('chat-status');
@@ -318,59 +325,102 @@ async function sendMessage() {
     // Disable input while sending
     input.disabled = true;
     sendBtn.disabled = true;
-    status.textContent = '◉ TRANSMITTING...';
+    status.textContent = '◉ OPENING TELEGRAM...';
     status.className = 'chat-status sending';
     
-    // Add message to chat
+    // Add message to chat immediately
     addMessageToChat('user', message);
-    input.value = '';
+    
+    // Store message in localStorage for persistence
+    storeMessage('user', message);
+    
+    // Create Telegram message URL
+    const formattedMessage = `[From Dashboard] ${message}`;
+    const telegramUrl = `https://t.me/${TELEGRAM_CONFIG.botUsername}?start=dashboard_${encodeURIComponent(message)}`;
+    
+    // Also try the direct message URL
+    const directMessageUrl = `tg://resolve?domain=${TELEGRAM_CONFIG.botUsername}&start=dashboard_msg`;
+    
+    // Try to open Telegram app
+    let opened = false;
     
     try {
-        // Send to API
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: message,
-                timestamp: new Date().toISOString(),
-                source: 'dashboard'
-            })
-        });
+        // Try app URL first (mobile)
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.location.href = `tg://msg?text=${encodeURIComponent(formattedMessage)}&to=@${TELEGRAM_CONFIG.botUsername}`;
+            opened = true;
+        } else {
+            // Desktop - open web version in new tab
+            window.open(telegramUrl, '_blank');
+            opened = true;
+        }
         
-        if (response.ok) {
-            status.textContent = '✓ MESSAGE SENT TO TARS';
+        if (opened) {
+            status.textContent = '✓ TELEGRAM OPENED';
             status.className = 'chat-status sent';
             
-            // Simulate TARS acknowledgment
+            // Add TARS acknowledgment
             setTimeout(() => {
-                addMessageToChat('tars', 'Message received. Processing...');
+                const reply = 'Message sent to Telegram! Check your Telegram app for my reply.';
+                addMessageToChat('tars', reply);
+                storeMessage('tars', reply);
             }, 1000);
-        } else {
-            throw new Error('Failed to send');
         }
     } catch (error) {
         console.error('Chat error:', error);
-        status.textContent = '✗ TRANSMISSION FAILED';
+        status.textContent = '✗ PLEASE OPEN TELEGRAM MANUALLY';
         status.className = 'chat-status error';
     } finally {
+        input.value = '';
         input.disabled = false;
         sendBtn.disabled = false;
         input.focus();
         
-        // Reset status after 3 seconds
+        // Reset status after 4 seconds
         setTimeout(() => {
             status.textContent = 'READY';
             status.className = 'chat-status';
-        }, 3000);
+        }, 4000);
+    }
+}
+
+// Store message in localStorage for persistence
+function storeMessage(sender, text) {
+    const messages = JSON.parse(localStorage.getItem('tars_chat') || '[]');
+    messages.push({
+        sender,
+        text,
+        time: new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        })
+    });
+    // Keep only last 50 messages
+    if (messages.length > 50) messages.shift();
+    localStorage.setItem('tars_chat', JSON.stringify(messages));
+}
+
+// Load chat history from localStorage
+function loadChatHistory() {
+    const messages = JSON.parse(localStorage.getItem('tars_chat') || '[]');
+    if (messages.length > 0) {
+        const container = document.getElementById('chat-messages');
+        // Remove welcome message
+        const welcome = container.querySelector('.chat-welcome');
+        if (welcome) welcome.remove();
+        
+        // Add stored messages
+        messages.forEach(msg => {
+            addMessageToChat(msg.sender, msg.text, msg.time, false);
+        });
     }
 }
 
 // Add message to chat display
-function addMessageToChat(sender, text) {
+function addMessageToChat(sender, text, existingTime = null, autoScroll = true) {
     const container = document.getElementById('chat-messages');
-    const time = new Date().toLocaleTimeString('en-US', {
+    const time = existingTime || new Date().toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false
@@ -392,7 +442,9 @@ function addMessageToChat(sender, text) {
     `;
     
     container.appendChild(messageEl);
-    container.scrollTop = container.scrollHeight;
+    if (autoScroll) {
+        container.scrollTop = container.scrollHeight;
+    }
 }
 
 // Escape HTML to prevent XSS
