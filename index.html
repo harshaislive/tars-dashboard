@@ -4,80 +4,233 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TARS Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/eink.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>TARS COMMAND CENTER</h1>
-            <span class="lock">🔒</span>
+    <!-- Password Overlay -->
+    <div class="password-overlay" id="password-overlay">
+        <div class="lock-icon">◈</div>
+        <h1>TARS COMMAND CENTER</h1>
+        <p class="subtitle">Neural Interface // Secure Connection Required</p>
+        <input type="password" class="password-input" id="password-input" placeholder="Enter Access Code">
+        <button class="btn btn-primary" onclick="verifyPassword()">AUTHENTICATE</button>
+        <div class="error-msg" id="error-msg"></div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="container" id="dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="brand">
+                <span class="logo">◈</span>
+                <div>
+                    <h1>TARS</h1>
+                    <span class="tagline">Command Center</span>
+                </div>
+            </div>
+            <div class="connection-status">
+                <span class="pulse"></span>
+                <span>ONLINE</span>
+                <span class="time" id="current-time">--:--</span>
+            </div>
         </header>
-        
-        <main>
-            <!-- Avatar Section -->
-            <div class="avatar-section">
-                <div class="avatar">
-                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Abstract TARS Avatar -->
-                        <circle cx="100" cy="100" r="90" fill="none" stroke="#000" stroke-width="4"/>
-                        <circle cx="100" cy="85" r="35" fill="none" stroke="#000" stroke-width="3"/>
-                        <circle cx="85" cy="80" r="8" fill="#000"/>
-                        <circle cx="115" cy="80" r="8" fill="#000"/>
-                        <path d="M 70 110 Q 100 130 130 110" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"/>
-                        <rect x="60" y="140" width="80" height="30" rx="5" fill="none" stroke="#000" stroke-width="2"/>
-                        <line x1="75" y1="155" x2="125" y2="155" stroke="#000" stroke-width="2"/>
+
+        <!-- Hero Section - Avatar & Core Stats -->
+        <section class="hero">
+            <div class="avatar-container">
+                <div class="avatar-frame">
+                    <svg class="tars-avatar" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- TARS Bot Avatar - Premium Design -->
+                        <defs>
+                            <linearGradient id="faceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fff"/>
+                                <stop offset="100%" style="stop-color:#f5f5f5"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Outer ring -->
+                        <circle cx="100" cy="100" r="95" fill="none" stroke="#000" stroke-width="3"/>
+                        <circle cx="100" cy="100" r="88" fill="none" stroke="#333" stroke-width="1"/>
+                        
+                        <!-- Face base -->
+                        <rect x="45" y="40" width="110" height="120" rx="15" fill="url(#faceGrad)" stroke="#000" stroke-width="3"/>
+                        
+                        <!-- Screen/bezel -->
+                        <rect x="52" y="50" width="96" height="85" rx="8" fill="#000"/>
+                        
+                        <!-- Eyes - glowing effect -->
+                        <ellipse cx="80" cy="80" rx="18" ry="22" fill="#fff"/>
+                        <ellipse cx="120" cy="80" rx="18" ry="22" fill="#fff"/>
+                        <ellipse cx="80" cy="80" rx="8" ry="12" fill="#000"/>
+                        <ellipse cx="120" cy="80" rx="8" ry="12" fill="#000"/>
+                        
+                        <!-- Expression lines -->
+                        <path d="M 65 110 Q 100 125 135 110" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M 70 120 Q 100 130 130 120" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+                        
+                        <!-- Antenna -->
+                        <line x1="100" y1="40" x2="100" y2="15" stroke="#000" stroke-width="3"/>
+                        <circle cx="100" cy="12" r="5" fill="#000"/>
+                        <circle cx="100" cy="12" r="2" fill="#fff"/>
+                        
+                        <!-- Side details -->
+                        <rect x="38" y="70" width="4" height="20" rx="1" fill="#000"/>
+                        <rect x="158" y="70" width="4" height="20" rx="1" fill="#000"/>
+                        <rect x="38" y="95" width="4" height="15" rx="1" fill="#333"/>
+                        <rect x="158" y="95" width="4" height="15" rx="1" fill="#333"/>
+                        
+                        <!-- Bottom interface -->
+                        <rect x="60" y="140" width="80" height="12" rx="2" fill="#000"/>
+                        <rect x="65" y="143" width="20" height="6" rx="1" fill="#fff"/>
+                        <rect x="90" y="143" width="15" height="6" rx="1" fill="#666"/>
+                        <rect x="110" y="143" width="25" height="6" rx="1" fill="#333"/>
                     </svg>
                 </div>
-                <div class="status-indicator" id="status">● Online</div>
-            </div>
-            
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">MEMORIES</div>
-                    <div class="stat-value" id="memories">--</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">TASKS</div>
-                    <div class="stat-value" id="tasks">--</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">EMAILS IN</div>
-                    <div class="stat-value" id="emails-in">--</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">EMAILS OUT</div>
-                    <div class="stat-value" id="emails-out">--</div>
+                <div class="avatar-label">
+                    <span class="name">TARS</span>
+                    <span class="version">v2.0.1</span>
                 </div>
             </div>
-            
-            <!-- System Status -->
-            <div class="section">
-                <h2>SYSTEM STATUS</h2>
-                <div class="status-list" id="system-status">
-                    <div class="status-item"><span class="dot online"></span> Memory DB</div>
-                    <div class="status-item"><span class="dot online"></span> Coolify API</div>
-                    <div class="status-item"><span class="dot online"></span> Telegram Bot</div>
-                    <div class="status-item"><span class="dot online"></span> GitHub SSH</div>
+
+            <div class="hero-stats">
+                <div class="stat-large">
+                    <span class="stat-number" id="memories">--</span>
+                    <span class="stat-label">Neural Memories</span>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-item">
+                        <span class="value" id="uptime">--</span>
+                        <span class="label">Days Active</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="value" id="skills">--</span>
+                        <span class="label">Skills</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="value" id="deployments">--</span>
+                        <span class="label">Deployments</span>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Recent Activity -->
-            <div class="section">
-                <h2>RECENT ACTIVITY</h2>
-                <div class="activity-list" id="activity">
-                    <div class="activity-item">Loading...</div>
+        </section>
+
+        <!-- Metrics Grid -->
+        <section class="metrics">
+            <div class="metric-card">
+                <div class="metric-icon">◉</div>
+                <div class="metric-data">
+                    <span class="metric-value" id="tasks">--</span>
+                    <span class="metric-label">Active Tasks</span>
                 </div>
             </div>
-            
-            <!-- Controls -->
-            <div class="controls">
-                <button id="refresh-btn" class="btn">↻ REFRESH</button>
-                <span class="last-update" id="last-update">Last: --:--</span>
+            <div class="metric-card">
+                <div class="metric-icon">✉</div>
+                <div class="metric-data">
+                    <span class="metric-value" id="emails-in">--</span>
+                    <span class="metric-label">Emails In</span>
+                </div>
             </div>
-        </main>
+            <div class="metric-card">
+                <div class="metric-icon">➤</div>
+                <div class="metric-data">
+                    <span class="metric-value" id="emails-out">--</span>
+                    <span class="metric-label">Emails Out</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">◈</div>
+                <div class="metric-data">
+                    <span class="metric-value" id="subdomains">--</span>
+                    <span class="metric-label">Subdomains</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Health -->
+        <section class="health-section">
+            <h2 class="section-title">
+                <span class="title-icon">◉</span>
+                System Health
+            </h2>
+            <div class="health-grid" id="system-status">
+                <div class="health-item" data-status="online">
+                    <span class="indicator"></span>
+                    <span class="name">Memory Vector DB</span>
+                    <span class="status">ONLINE</span>
+                </div>
+                <div class="health-item" data-status="online">
+                    <span class="indicator"></span>
+                    <span class="name">Coolify API</span>
+                    <span class="status">ONLINE</span>
+                </div>
+                <div class="health-item" data-status="online">
+                    <span class="indicator"></span>
+                    <span class="name">Telegram Bot</span>
+                    <span class="status">ONLINE</span>
+                </div>
+                <div class="health-item" data-status="online">
+                    <span class="indicator"></span>
+                    <span class="name">GitHub SSH</span>
+                    <span class="status">ONLINE</span>
+                </div>
+                <div class="health-item" data-status="online">
+                    <span class="indicator"></span>
+                    <span class="name">ChromaDB</span>
+                    <span class="status">ONLINE</span>
+                </div>
+                <div class="health-item" data-status="online">
+                    <span class="indicator"></span>
+                    <span class="name">GA4 Analytics</span>
+                    <span class="status">ONLINE</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity Feed -->
+        <section class="activity-section">
+            <h2 class="section-title">
+                <span class="title-icon">◈</span>
+                Activity Stream
+            </h2>
+            <div class="activity-list" id="activity">
+                <div class="activity-item">
+                    <span class="timestamp">--:--</span>
+                    <span class="action">Initializing dashboard...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Last Deployment -->
+        <section class="deployment-section">
+            <h2 class="section-title">
+                <span class="title-icon">▲</span>
+                Latest Deployment
+            </h2>
+            <div class="deployment-card">
+                <div class="deploy-info">
+                    <span class="deploy-name" id="last-deploy-name">--</span>
+                    <span class="deploy-url" id="last-deploy-url">--</span>
+                </div>
+                <span class="deploy-time" id="last-deploy-time">--</span>
+            </div>
+        </section>
+
+        <!-- Footer Controls -->
+        <footer class="dashboard-footer">
+            <div class="footer-info">
+                <span class="version">TARS v2.0.1 // Build 2026.01.30</span>
+                <span class="last-sync" id="last-sync">Last sync: Never</span>
+            </div>
+            <button class="btn btn-refresh" id="refresh-btn" onclick="manualRefresh()">
+                <span class="refresh-icon">↻</span>
+                SYNC NOW
+            </button>
+        </footer>
     </div>
-    
+
     <script src="js/dashboard.js"></script>
 </body>
 </html>
