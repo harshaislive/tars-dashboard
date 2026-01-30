@@ -13,7 +13,7 @@ sys.path.insert(0, '/root/clawd')
 
 # Configuration
 OUTPUT_FILE = Path('/root/clawd/tars-dashboard/api/status.json')
-TARS_START_DATE = datetime(2024, 1, 1)  # Approximate
+TARS_START_DATE = datetime(2026, 1, 26)  # First AGENTS.md created
 
 def run_command(cmd, timeout=10):
     """Run shell command safely"""

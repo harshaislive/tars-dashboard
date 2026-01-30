@@ -108,10 +108,10 @@ function updateTime() {
 
 // Start uptime counter
 function startUptimeCounter() {
-    // TARS creation date: January 2024 (approximately 390 days ago)
-    const startDate = new Date('2024-01-01');
+    // TARS creation date: January 26, 2026 (first AGENTS.md created)
+    const startDate = new Date('2026-01-26');
     const days = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-    document.getElementById('uptime').textContent = days;
+    document.getElementById('uptime').textContent = Math.max(1, days);
 }
 
 // Manual refresh
