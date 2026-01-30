@@ -303,3 +303,114 @@ document.addEventListener('visibilitychange', () => {
 document.addEventListener('beforeunload', () => {
     stopAutoRefresh();
 });
+
+// ========== CHAT FUNCTIONS ==========
+
+// Send message to TARS
+async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const status = document.getElementById('chat-status');
+    const sendBtn = document.getElementById('send-btn');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    // Disable input while sending
+    input.disabled = true;
+    sendBtn.disabled = true;
+    status.textContent = '◉ TRANSMITTING...';
+    status.className = 'chat-status sending';
+    
+    // Add message to chat
+    addMessageToChat('user', message);
+    input.value = '';
+    
+    try {
+        // Send to API
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                timestamp: new Date().toISOString(),
+                source: 'dashboard'
+            })
+        });
+        
+        if (response.ok) {
+            status.textContent = '✓ MESSAGE SENT TO TARS';
+            status.className = 'chat-status sent';
+            
+            // Simulate TARS acknowledgment
+            setTimeout(() => {
+                addMessageToChat('tars', 'Message received. Processing...');
+            }, 1000);
+        } else {
+            throw new Error('Failed to send');
+        }
+    } catch (error) {
+        console.error('Chat error:', error);
+        status.textContent = '✗ TRANSMISSION FAILED';
+        status.className = 'chat-status error';
+    } finally {
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+        
+        // Reset status after 3 seconds
+        setTimeout(() => {
+            status.textContent = 'READY';
+            status.className = 'chat-status';
+        }, 3000);
+    }
+}
+
+// Add message to chat display
+function addMessageToChat(sender, text) {
+    const container = document.getElementById('chat-messages');
+    const time = new Date().toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    });
+    
+    // Remove welcome message if present
+    const welcome = container.querySelector('.chat-welcome');
+    if (welcome) welcome.remove();
+    
+    const messageEl = document.createElement('div');
+    messageEl.className = `chat-message ${sender}`;
+    messageEl.innerHTML = `
+        <div class="avatar">${sender === 'user' ? 'H' : '◈'}</div>
+        <div class="content">
+            <div class="sender">${sender === 'user' ? 'Harsha' : 'TARS'}</div>
+            <div class="text">${escapeHtml(text)}</div>
+            <div class="time">${time}</div>
+        </div>
+    `;
+    
+    container.appendChild(messageEl);
+    container.scrollTop = container.scrollHeight;
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Setup chat input listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const chatInput = document.getElementById('chat-input');
+    if (chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+});
