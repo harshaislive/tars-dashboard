@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TARS Command Center</title>
+    <link rel="stylesheet" href="css/eink.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>TARS COMMAND CENTER</h1>
+            <span class="lock">🔒</span>
+        </header>
+        
+        <main>
+            <!-- Avatar Section -->
+            <div class="avatar-section">
+                <div class="avatar">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Abstract TARS Avatar -->
+                        <circle cx="100" cy="100" r="90" fill="none" stroke="#000" stroke-width="4"/>
+                        <circle cx="100" cy="85" r="35" fill="none" stroke="#000" stroke-width="3"/>
+                        <circle cx="85" cy="80" r="8" fill="#000"/>
+                        <circle cx="115" cy="80" r="8" fill="#000"/>
+                        <path d="M 70 110 Q 100 130 130 110" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"/>
+                        <rect x="60" y="140" width="80" height="30" rx="5" fill="none" stroke="#000" stroke-width="2"/>
+                        <line x1="75" y1="155" x2="125" y2="155" stroke="#000" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="status-indicator" id="status">● Online</div>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">MEMORIES</div>
+                    <div class="stat-value" id="memories">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">TASKS</div>
+                    <div class="stat-value" id="tasks">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">EMAILS IN</div>
+                    <div class="stat-value" id="emails-in">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">EMAILS OUT</div>
+                    <div class="stat-value" id="emails-out">--</div>
+                </div>
+            </div>
+            
+            <!-- System Status -->
+            <div class="section">
+                <h2>SYSTEM STATUS</h2>
+                <div class="status-list" id="system-status">
+                    <div class="status-item"><span class="dot online"></span> Memory DB</div>
+                    <div class="status-item"><span class="dot online"></span> Coolify API</div>
+                    <div class="status-item"><span class="dot online"></span> Telegram Bot</div>
+                    <div class="status-item"><span class="dot online"></span> GitHub SSH</div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="section">
+                <h2>RECENT ACTIVITY</h2>
+                <div class="activity-list" id="activity">
+                    <div class="activity-item">Loading...</div>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="controls">
+                <button id="refresh-btn" class="btn">↻ REFRESH</button>
+                <span class="last-update" id="last-update">Last: --:--</span>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

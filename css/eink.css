@@ -1,0 +1,292 @@
+/* E-Ink Optimized Styles for TARS Dashboard */
+:root {
+    --ink-black: #000000;
+    --ink-dark: #333333;
+    --ink-gray: #666666;
+    --ink-light: #999999;
+    --paper-white: #ffffff;
+    --paper-off: #f5f5f5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--paper-white);
+    color: var(--ink-black);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--ink-black);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.lock {
+    font-size: 20px;
+}
+
+/* Avatar Section */
+.avatar-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 15px;
+    border: 4px solid var(--ink-black);
+    border-radius: 50%;
+    padding: 10px;
+    background: var(--paper-white);
+}
+
+.avatar svg {
+    width: 100%;
+    height: 100%;
+}
+
+.status-indicator {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-dark);
+}
+
+.status-indicator.online {
+    color: var(--ink-black);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    border: 3px solid var(--ink-black);
+    padding: 20px;
+    text-align: center;
+    background: var(--paper-white);
+}
+
+.stat-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--ink-gray);
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--ink-black);
+}
+
+/* Sections */
+.section {
+    border: 3px solid var(--ink-black);
+    padding: 20px;
+    margin-bottom: 20px;
+    background: var(--paper-white);
+}
+
+.section h2 {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--ink-black);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Status List */
+.status-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--ink-black);
+}
+
+.dot.online {
+    background: var(--ink-black);
+}
+
+.dot.offline {
+    background: var(--paper-white);
+}
+
+/* Activity List */
+.activity-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ink-light);
+    font-size: 14px;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid var(--ink-black);
+}
+
+.btn {
+    background: var(--paper-white);
+    color: var(--ink-black);
+    border: 3px solid var(--ink-black);
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.btn:hover {
+    background: var(--ink-black);
+    color: var(--paper-white);
+}
+
+.btn:active {
+    transform: translate(2px, 2px);
+}
+
+.last-update {
+    font-size: 12px;
+    color: var(--ink-gray);
+    font-family: 'Courier New', monospace;
+}
+
+/* Password Protection Overlay */
+.password-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--paper-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.password-overlay h2 {
+    margin-bottom: 20px;
+}
+
+.password-input {
+    border: 3px solid var(--ink-black);
+    padding: 12px;
+    font-size: 16px;
+    width: 250px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.password-input:focus {
+    outline: none;
+    background: var(--paper-off);
+}
+
+.error-msg {
+    color: var(--ink-black);
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .status-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+}
+
+/* Print / E-ink specific */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .btn {
+        display: none;
+    }
+}
+
+/* High contrast mode for e-ink */
+.high-contrast {
+    --ink-black: #000000;
+    --paper-white: #ffffff;
+}
+
+/* No animations - e-ink friendly */
+* {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Allow button hover for desktop */
+.btn {
+    transition: background 0.1s, color 0.1s !important;
+}
