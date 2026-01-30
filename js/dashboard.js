@@ -512,6 +512,32 @@ function updateLatestCopy(data) {
         
         const trendsList = card.querySelector('.copy-trends ul');
         trendsList.innerHTML = snippet.themes.map(t => `<li>${t}</li>`).join('');
+        
+        // Update Language DNA
+        const dna = snippet.language_dna || {};
+        const dnaContainer = card.querySelector('.dna-bars');
+        if (dnaContainer && data.stats && data.stats.style_breakdown) {
+            const styles = data.stats.style_breakdown;
+            const total = data.stats.total_snippets || 1;
+            
+            dnaContainer.innerHTML = `
+                <div class="dna-item">
+                    <span class="dna-label">Philosophical</span>
+                    <div class="dna-bar"><div class="dna-fill" style="width: ${(styles.philosophical / total * 100) || 0}%"></div></div>
+                    <span class="dna-value">${Math.round((styles.philosophical / total * 100) || 0)}%</span>
+                </div>
+                <div class="dna-item">
+                    <span class="dna-label">Tribal</span>
+                    <div class="dna-bar"><div class="dna-fill" style="width: ${(styles.tribal / total * 100) || 0}%"></div></div>
+                    <span class="dna-value">${Math.round((styles.tribal / total * 100) || 0)}%</span>
+                </div>
+                <div class="dna-item">
+                    <span class="dna-label">Confrontational</span>
+                    <div class="dna-bar"><div class="dna-fill" style="width: ${(styles.confrontational / total * 100) || 0}%"></div></div>
+                    <span class="dna-value">${Math.round((styles.confrontational / total * 100) || 0)}%</span>
+                </div>
+            `;
+        }
     }
 }
 

@@ -868,6 +868,59 @@ section {
     color: var(--ink-light);
 }
 
+/* Language DNA */
+.copy-dna {
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--ink-faint);
+    background: var(--paper-off);
+}
+
+.copy-dna h4 {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-md);
+    color: var(--ink-light);
+}
+
+.dna-bars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.dna-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.dna-label {
+    font-size: 11px;
+    width: 100px;
+    font-family: var(--font-mono);
+}
+
+.dna-bar {
+    flex: 1;
+    height: 12px;
+    background: var(--paper-pure);
+    border: 1px solid var(--ink-mid);
+}
+
+.dna-fill {
+    height: 100%;
+    background: var(--ink-pure);
+}
+
+.dna-value {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    width: 35px;
+    text-align: right;
+}
+
 .copy-actions {
     display: flex;
     gap: var(--space-md);
