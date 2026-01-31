@@ -104,6 +104,9 @@ function showDashboard() {
 // ============================================
 
 function initializeDashboard() {
+    // Set initial avatar state
+    setAvatarState('active');
+
     // Initial data load with flash
     triggerInkFlash(() => {
         loadData();
@@ -206,6 +209,256 @@ async function fetchData() {
 }
 
 // ============================================
+// AVATAR STATE MANAGEMENT
+// ============================================
+
+function setAvatarState(state) {
+    const avatar = document.getElementById('tars-avatar');
+    const statusDot = document.getElementById('avatar-status-dot');
+
+    if (!avatar) return;
+
+    // Update data attribute
+    avatar.setAttribute('data-state', state);
+
+    // Hide all eye and mouth states
+    const eyes = avatar.querySelectorAll('.avatar-eyes');
+    const mouths = avatar.querySelectorAll('.avatar-mouth');
+    const alertIndicator = avatar.querySelector('.avatar-alert-indicator');
+
+    eyes.forEach(e => e.style.display = 'none');
+    mouths.forEach(m => m.style.display = 'none');
+
+    // Show appropriate state
+    switch(state) {
+        case 'active':
+            avatar.querySelector('.active-eyes').style.display = 'block';
+            avatar.querySelector('.active-mouth').style.display = 'block';
+            if (alertIndicator) alertIndicator.style.display = 'none';
+            if (statusDot) statusDot.title = 'Active';
+            break;
+        case 'thinking':
+            avatar.querySelector('.thinking-eyes').style.display = 'block';
+            avatar.querySelector('.thinking-mouth').style.display = 'block';
+            if (alertIndicator) alertIndicator.style.display = 'none';
+            if (statusDot) statusDot.title = 'Thinking...';
+            break;
+        case 'alert':
+            avatar.querySelector('.alert-eyes').style.display = 'block';
+            avatar.querySelector('.alert-mouth').style.display = 'block';
+            if (alertIndicator) alertIndicator.style.display = 'block';
+            if (statusDot) statusDot.title = 'Alert!';
+            break;
+    }
+}
+
+function cycleAvatarStates() {
+    // Occasionally cycle through states for visual interest
+    const states = ['active', 'thinking', 'active', 'alert'];
+    const randomState = states[Math.floor(Math.random() * states.length)];
+    setAvatarState(randomState);
+
+    // Return to active after a brief moment (for thinking/alert)
+    if (randomState !== 'active') {
+        setTimeout(() => setAvatarState('active'), 2000);
+    }
+}
+
+// ============================================
+// INSIGHT GENERATION
+// ============================================
+
+function generateInsights(data) {
+    const insights = {
+        priority: generatePriorityInsight(data),
+        health: generateHealthInsight(data),
+        velocity: generateVelocityInsight(data),
+        attention: generateAttentionInsight(data)
+    };
+
+    return insights;
+}
+
+function generatePriorityInsight(data) {
+    const tasks = data.tasks || 0;
+    const emailsIn = data.emailsIn || 0;
+
+    // Determine what's most urgent
+    if (emailsIn > 3) {
+        return {
+            value: `${emailsIn} unread`,
+            context: 'Inbox needs attention',
+            priority: 'high'
+        };
+    } else if (tasks > 5) {
+        return {
+            value: `${tasks} active`,
+            context: 'Task backlog growing',
+            priority: 'medium'
+        };
+    } else if (tasks > 0) {
+        return {
+            value: `${tasks} active`,
+            context: 'On top of priorities',
+            priority: 'low'
+        };
+    } else {
+        return {
+            value: 'Clear',
+            context: 'No urgent items',
+            priority: 'low'
+        };
+    }
+}
+
+function generateHealthInsight(data) {
+    const systemStatus = data.systemStatus || {};
+    const statuses = Object.values(systemStatus);
+
+    if (statuses.length === 0) {
+        return {
+            value: 'Unknown',
+            context: 'Status unavailable',
+            priority: 'medium'
+        };
+    }
+
+    const online = statuses.filter(s => s === 'online').length;
+    const total = statuses.length;
+    const percentage = Math.round((online / total) * 100);
+
+    // Find worst performing service
+    const serviceNames = {
+        memoryDb: 'Memory DB',
+        coolifyApi: 'Coolify API',
+        telegramBot: 'Telegram Bot',
+        githubSsh: 'GitHub SSH',
+        chromaDb: 'ChromaDB',
+        ga4Analytics: 'GA4 Analytics'
+    };
+
+    let worstService = null;
+    for (const [key, status] of Object.entries(systemStatus)) {
+        if (status !== 'online') {
+            worstService = serviceNames[key] || key;
+            break;
+        }
+    }
+
+    if (percentage === 100) {
+        return {
+            value: '100%',
+            context: 'All systems operational',
+            priority: 'low'
+        };
+    } else if (percentage >= 80) {
+        return {
+            value: `${percentage}%`,
+            context: worstService ? `${worstService} degraded` : 'Minor issues',
+            priority: 'medium'
+        };
+    } else {
+        return {
+            value: `${percentage}%`,
+            context: worstService ? `${worstService} offline` : 'Multiple issues',
+            priority: 'high'
+        };
+    }
+}
+
+function generateVelocityInsight(data) {
+    const deployments = data.deployments || 0;
+    const memories = data.memories || 0;
+
+    // Calculate memory growth (simulated based on time of day)
+    const hour = new Date().getHours();
+    const dailyGrowth = Math.max(1, Math.floor(memories * 0.1)); // Simulated daily growth
+
+    if (deployments > 0) {
+        return {
+            value: `+${dailyGrowth} today`,
+            context: `${deployments} deployments`,
+            priority: 'low'
+        };
+    } else {
+        return {
+            value: `+${dailyGrowth} today`,
+            context: 'Learning actively',
+            priority: 'low'
+        };
+    }
+}
+
+function generateAttentionInsight(data) {
+    const emailsIn = data.emailsIn || 0;
+    const tasks = data.tasks || 0;
+
+    // Count stale items (simplified logic)
+    const staleEmails = emailsIn > 2 ? emailsIn - 2 : 0;
+    const staleTasks = tasks > 3 ? tasks - 3 : 0;
+    const totalStale = staleEmails + staleTasks;
+
+    if (totalStale === 0) {
+        return {
+            value: 'Clear',
+            context: 'Nothing pending',
+            priority: 'low'
+        };
+    } else if (totalStale <= 2) {
+        return {
+            value: `${totalStale} items`,
+            context: 'Needs review soon',
+            priority: 'medium'
+        };
+    } else {
+        return {
+            value: `${totalStale} items`,
+            context: 'Attention required',
+            priority: 'high'
+        };
+    }
+}
+
+function updateInsightCards(insights) {
+    // Update each insight card
+    for (const [key, insight] of Object.entries(insights)) {
+        const valueEl = document.getElementById(`insight-${key}-value`);
+        const contextEl = document.getElementById(`insight-${key}-context`);
+        const cardEl = document.querySelector(`[data-insight="${key}"]`);
+
+        if (valueEl) {
+            // Animate value change
+            const oldValue = valueEl.textContent;
+            if (oldValue !== insight.value) {
+                valueEl.textContent = insight.value;
+                if (cardEl) {
+                    cardEl.classList.add('updating');
+                    setTimeout(() => cardEl.classList.remove('updating'), 400);
+                }
+            }
+        }
+
+        if (contextEl) {
+            contextEl.textContent = insight.context;
+        }
+
+        if (cardEl) {
+            cardEl.setAttribute('data-priority', insight.priority);
+        }
+    }
+
+    // Update avatar state based on highest priority insight
+    const priorities = Object.values(insights).map(i => i.priority);
+    if (priorities.includes('high')) {
+        setAvatarState('alert');
+    } else if (priorities.includes('medium')) {
+        setAvatarState('thinking');
+    } else {
+        setAvatarState('active');
+    }
+}
+
+// ============================================
 // REAL-TIME UPDATES
 // ============================================
 
@@ -264,10 +517,22 @@ function simulateLiveUpdate() {
         case 'tasks':
             currentData.tasks = Math.max(0, currentData.tasks + (Math.random() > 0.7 ? 1 : -1));
             break;
+        case 'emailsIn':
+            currentData.emailsIn = Math.max(0, currentData.emailsIn + (Math.random() > 0.6 ? 1 : -1));
+            break;
     }
 
     // Update display without full flash
     updateMetricValue(choice, currentData[choice]);
+
+    // Occasionally cycle avatar state
+    if (Math.random() > 0.7) {
+        cycleAvatarStates();
+    }
+
+    // Regenerate insights with new data
+    const insights = generateInsights(currentData);
+    updateInsightCards(insights);
 }
 
 function updateConnectionStatus(connected) {
@@ -290,6 +555,10 @@ function updateDashboard(data) {
     updateMetricValue('subdomains', data.subdomains || 0);
     updateMetricValue('emails-in', data.emailsIn || 0);
     updateMetricValue('emails-out', data.emailsOut || 0);
+
+    // Generate and update insights
+    const insights = generateInsights(data);
+    updateInsightCards(insights);
 
     // System status
     updateSystemStatus(data.systemStatus);
