@@ -3,361 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TARS Command Center</title>
+    <title>TARS E-Ink Display</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/eink.css">
 </head>
 <body>
-    <!-- Password Overlay -->
-    <div class="password-overlay" id="password-overlay">
-        <div class="lock-icon">◈</div>
-        <h1>TARS COMMAND CENTER</h1>
-        <p class="subtitle">Neural Interface // Secure Connection Required</p>
-        <input type="password" class="password-input" id="password-input" placeholder="Enter Access Code">
-        <button class="btn btn-primary" onclick="verifyPassword()">AUTHENTICATE</button>
-        <div class="error-msg" id="error-msg"></div>
-    </div>
+    <!-- E-ink Screen Frame -->
+    <div class="eink-frame">
+        <!-- Paper Texture Overlay -->
+        <div class="paper-texture"></div>
+        <div class="paper-grain"></div>
 
-    <!-- Main Dashboard -->
-    <div class="container" id="dashboard" style="display: none;">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <div class="brand">
-                <span class="logo">◈</span>
-                <div>
-                    <h1>TARS</h1>
-                    <span class="tagline">Command Center</span>
-                </div>
-            </div>
-            <div class="connection-status">
-                <span class="pulse"></span>
-                <span>ONLINE</span>
-                <span class="time" id="current-time">--:--</span>
-            </div>
-        </header>
+        <!-- E-ink Refresh Flash Overlay -->
+        <div class="ink-flash-overlay" id="ink-flash"></div>
 
-        <!-- Hero Section - Avatar & Core Stats -->
-        <section class="hero">
-            <div class="avatar-container">
-                <div class="avatar-frame">
-                    <svg class="tars-avatar" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <!-- TARS Bot Avatar - Premium Design -->
-                        <defs>
-                            <linearGradient id="faceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#fff"/>
-                                <stop offset="100%" style="stop-color:#f5f5f5"/>
-                            </linearGradient>
-                        </defs>
-                        
-                        <!-- Outer ring -->
-                        <circle cx="100" cy="100" r="95" fill="none" stroke="#000" stroke-width="3"/>
-                        <circle cx="100" cy="100" r="88" fill="none" stroke="#333" stroke-width="1"/>
-                        
-                        <!-- Face base -->
-                        <rect x="45" y="40" width="110" height="120" rx="15" fill="url(#faceGrad)" stroke="#000" stroke-width="3"/>
-                        
-                        <!-- Screen/bezel -->
-                        <rect x="52" y="50" width="96" height="85" rx="8" fill="#000"/>
-                        
-                        <!-- Eyes - glowing effect -->
-                        <ellipse cx="80" cy="80" rx="18" ry="22" fill="#fff"/>
-                        <ellipse cx="120" cy="80" rx="18" ry="22" fill="#fff"/>
-                        <ellipse cx="80" cy="80" rx="8" ry="12" fill="#000"/>
-                        <ellipse cx="120" cy="80" rx="8" ry="12" fill="#000"/>
-                        
-                        <!-- Expression lines -->
-                        <path d="M 65 110 Q 100 125 135 110" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-                        <path d="M 70 120 Q 100 130 130 120" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"/>
-                        
-                        <!-- Antenna -->
-                        <line x1="100" y1="40" x2="100" y2="15" stroke="#000" stroke-width="3"/>
-                        <circle cx="100" cy="12" r="5" fill="#000"/>
-                        <circle cx="100" cy="12" r="2" fill="#fff"/>
-                        
-                        <!-- Side details -->
-                        <rect x="38" y="70" width="4" height="20" rx="1" fill="#000"/>
-                        <rect x="158" y="70" width="4" height="20" rx="1" fill="#000"/>
-                        <rect x="38" y="95" width="4" height="15" rx="1" fill="#333"/>
-                        <rect x="158" y="95" width="4" height="15" rx="1" fill="#333"/>
-                        
-                        <!-- Bottom interface -->
-                        <rect x="60" y="140" width="80" height="12" rx="2" fill="#000"/>
-                        <rect x="65" y="143" width="20" height="6" rx="1" fill="#fff"/>
-                        <rect x="90" y="143" width="15" height="6" rx="1" fill="#666"/>
-                        <rect x="110" y="143" width="25" height="6" rx="1" fill="#333"/>
-                    </svg>
-                </div>
-                <div class="avatar-label">
-                    <span class="name">TARS</span>
-                    <span class="version">v2.0.1</span>
-                </div>
+        <!-- Screen Bezel -->
+        <div class="bezel">
+            <div class="bezel-top">
+                <span class="bezel-brand">TARS</span>
+                <span class="bezel-model">E-INK DISPLAY // MK-IV</span>
+                <div class="power-led" id="power-led"></div>
             </div>
 
-            <div class="hero-stats">
-                <div class="stat-large">
-                    <span class="stat-number" id="memories">--</span>
-                    <span class="stat-label">Neural Memories</span>
-                </div>
-                <div class="stat-row">
-                    <div class="stat-item">
-                        <span class="value" id="uptime">--</span>
-                        <span class="label">Days Active</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="value" id="skills">--</span>
-                        <span class="label">Skills</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="value" id="deployments">--</span>
-                        <span class="label">Deployments</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <!-- Main Display Area -->
+            <div class="display-area">
 
-        <!-- Metrics Grid -->
-        <section class="metrics">
-            <div class="metric-card">
-                <div class="metric-icon">◉</div>
-                <div class="metric-data">
-                    <span class="metric-value" id="tasks">--</span>
-                    <span class="metric-label">Active Tasks</span>
-                </div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-icon">✉</div>
-                <div class="metric-data">
-                    <span class="metric-value" id="emails-in">--</span>
-                    <span class="metric-label">Emails In</span>
-                </div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-icon">➤</div>
-                <div class="metric-data">
-                    <span class="metric-value" id="emails-out">--</span>
-                    <span class="metric-label">Emails Out</span>
-                </div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-icon">◈</div>
-                <div class="metric-data">
-                    <span class="metric-value" id="subdomains">--</span>
-                    <span class="metric-label">Subdomains</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- System Health -->
-        <section class="health-section">
-            <h2 class="section-title">
-                <span class="title-icon">◉</span>
-                System Health
-            </h2>
-            <div class="health-grid" id="system-status">
-                <div class="health-item" data-status="online">
-                    <span class="indicator"></span>
-                    <span class="name">Memory Vector DB</span>
-                    <span class="status">ONLINE</span>
-                </div>
-                <div class="health-item" data-status="online">
-                    <span class="indicator"></span>
-                    <span class="name">Coolify API</span>
-                    <span class="status">ONLINE</span>
-                </div>
-                <div class="health-item" data-status="online">
-                    <span class="indicator"></span>
-                    <span class="name">Telegram Bot</span>
-                    <span class="status">ONLINE</span>
-                </div>
-                <div class="health-item" data-status="online">
-                    <span class="indicator"></span>
-                    <span class="name">GitHub SSH</span>
-                    <span class="status">ONLINE</span>
-                </div>
-                <div class="health-item" data-status="online">
-                    <span class="indicator"></span>
-                    <span class="name">ChromaDB</span>
-                    <span class="status">ONLINE</span>
-                </div>
-                <div class="health-item" data-status="online">
-                    <span class="indicator"></span>
-                    <span class="name">GA4 Analytics</span>
-                    <span class="status">ONLINE</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Real-Time Operations Grid -->
-        <section class="ops-section">
-            <h2 class="section-title">
-                <span class="title-icon">◉</span>
-                Live Operations
-            </h2>
-            <div class="ops-grid">
-                <div class="ops-card">
-                    <h3>🔄 Active Jobs</h3>
-                    <div class="ops-content" id="active-jobs">
-                        <div class="ops-item">
-                            <span class="ops-name">Memory Sync</span>
-                            <span class="ops-status running">RUNNING</span>
+                <!-- Password Overlay -->
+                <div class="password-overlay" id="password-overlay">
+                    <div class="lock-screen">
+                        <div class="lock-icon">
+                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="8" y="20" width="32" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M16 20V12C16 7.58172 19.5817 4 24 4C28.4183 4 32 7.58172 32 12V20" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="24" cy="32" r="3" fill="currentColor"/>
+                            </svg>
                         </div>
-                        <div class="ops-item">
-                            <span class="ops-name">Daily Traffic Report</span>
-                            <span class="ops-status scheduled">23:59</span>
+                        <h1>Display Locked</h1>
+                        <p class="subtitle">Enter access code to continue</p>
+                        <input type="password" class="password-input" id="password-input" placeholder="••••••••••" maxlength="12">
+                        <button class="btn btn-primary" onclick="verifyPassword()">UNLOCK</button>
+                        <div class="error-msg" id="error-msg"></div>
+                        <div class="device-info">
+                            <span>FW: v2.1.0-eink</span>
+                            <span>SN: TARS-2026-0131</span>
                         </div>
                     </div>
                 </div>
-                <div class="ops-card">
-                    <h3>📝 Recent Logs</h3>
-                    <div class="ops-content log-scroll" id="recent-logs">
-                        <div class="log-entry info">
-                            <span class="log-time">17:45</span>
-                            <span class="log-msg">Dashboard deployed successfully</span>
-                        </div>
-                        <div class="log-entry success">
-                            <span class="log-time">17:44</span>
-                            <span class="log-msg">Git push: 6 files changed</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="ops-card">
-                    <h3>🧠 Recent Memories</h3>
-                    <div class="ops-content" id="recent-memories">
-                        <div class="memory-item">
-                            <span class="mem-time">17:40</span>
-                            <span class="mem-text">Removed chat feature from dashboard</span>
-                        </div>
-                        <div class="memory-item">
-                            <span class="mem-time">17:35</span>
-                            <span class="mem-text">Chat bar added to dashboard</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="ops-card">
-                    <h3>💻 System Resources</h3>
-                    <div class="ops-content" id="system-resources">
-                        <div class="resource-item">
-                            <span class="res-label">Memory DB</span>
-                            <div class="res-bar"><div class="res-fill" style="width: 45%"></div></div>
-                            <span class="res-value">45%</span>
-                        </div>
-                        <div class="resource-item">
-                            <span class="res-label">Disk Usage</span>
-                            <div class="res-bar"><div class="res-fill" style="width: 62%"></div></div>
-                            <span class="res-value">62%</span>
-                        </div>
-                        <div class="resource-item">
-                            <span class="res-label">CPU Load</span>
-                            <div class="res-bar"><div class="res-fill" style="width: 23%"></div></div>
-                            <span class="res-value">23%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Webhook Status -->
-        <section class="webhook-section">
-            <h2 class="section-title">
-                <span class="title-icon">◆</span>
-                Integration Status
-            </h2>
-            <div class="webhook-grid" id="integration-status">
-                <div class="webhook-item online">
-                    <span class="wh-icon">📱</span>
-                    <span class="wh-name">Telegram Webhook</span>
-                    <span class="wh-status">ACTIVE</span>
-                    <span class="wh-last">2s ago</span>
-                </div>
-                <div class="webhook-item online">
-                    <span class="wh-icon">📧</span>
-                    <span class="wh-name">Gmail Webhook</span>
-                    <span class="wh-status">ACTIVE</span>
-                    <span class="wh-last">1m ago</span>
-                </div>
-                <div class="webhook-item online">
-                    <span class="wh-icon">📊</span>
-                    <span class="wh-name">Coolify API</span>
-                    <span class="wh-status">CONNECTED</span>
-                    <span class="wh-last">Live</span>
-                </div>
-                <div class="webhook-item warning">
-                    <span class="wh-icon">🐦</span>
-                    <span class="wh-name">Twitter/X API</span>
-                    <span class="wh-status">LIMITED</span>
-                    <span class="wh-last">Rate limit</span>
-                </div>
-            </div>
-        </section>
+                <!-- Main Dashboard -->
+                <div class="dashboard" id="dashboard" style="display: none;">
 
-        <!-- Recent Commands -->
-        <section class="commands-section">
-            <h2 class="section-title">
-                <span class="title-icon">▶</span>
-                Recent Commands
-            </h2>
-            <div class="commands-list" id="recent-commands">
-                <div class="command-item">
-                    <span class="cmd-time">17:45:22</span>
-                    <code class="cmd-code">git push origin main</code>
-                    <span class="cmd-status success">✓</span>
-                </div>
-                <div class="command-item">
-                    <span class="cmd-time">17:44:15</span>
-                    <code class="cmd-code">coolify-deploy deploy --repo tars-dashboard</code>
-                    <span class="cmd-status success">✓</span>
-                </div>
-                <div class="command-item">
-                    <span class="cmd-time">17:35:08</span>
-                    <code class="cmd-code">python3 api/collect-metrics.py</code>
-                    <span class="cmd-status success">✓</span>
-                </div>
-            </div>
-        </section>
+                    <!-- Header -->
+                    <header class="dashboard-header">
+                        <div class="brand">
+                            <div class="logo-eink">
+                                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4" y="4" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="14" cy="16" r="3" fill="currentColor"/>
+                                    <circle cx="26" cy="16" r="3" fill="currentColor"/>
+                                    <path d="M12 26C12 26 16 30 20 30C24 30 28 26 28 26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="20" y1="4" x2="20" y2="2" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="20" cy="2" r="1.5" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="brand-text">
+                                <h1>TARS</h1>
+                                <span class="tagline">Neural Command</span>
+                            </div>
+                        </div>
+                        <div class="status-bar">
+                            <div class="battery-indicator">
+                                <span class="bat-icon">▮▮▮▮</span>
+                                <span class="bat-level">87%</span>
+                            </div>
+                            <div class="connection-dot" id="conn-dot" title="Connected"></div>
+                            <span class="clock" id="current-time">--:--</span>
+                        </div>
+                    </header>
 
-        <!-- Activity Feed -->
-        <section class="activity-section">
-            <h2 class="section-title">
-                <span class="title-icon">◈</span>
-                Activity Stream
-            </h2>
-            <div class="activity-list" id="activity">
-                <div class="activity-item">
-                    <span class="timestamp">--:--</span>
-                    <span class="action">Initializing dashboard...</span>
-                </div>
-            </div>
-        </section>
+                    <!-- Hero: Neural Core -->
+                    <section class="hero-eink">
+                        <div class="core-display">
+                            <div class="core-label">NEURAL MEMORIES</div>
+                            <div class="core-value" id="memories">
+                                <span class="digit-group" data-value="0">0</span>
+                                <span class="digit-group" data-value="0">0</span>
+                                <span class="digit-group" data-value="0">0</span>
+                            </div>
+                            <div class="core-sublabel">stored vectors in ChromaDB</div>
+                        </div>
+                        <div class="core-stats">
+                            <div class="cstat">
+                                <span class="cstat-val" id="uptime">--</span>
+                                <span class="cstat-label">Days Active</span>
+                            </div>
+                            <div class="cstat">
+                                <span class="cstat-val" id="skills">--</span>
+                                <span class="cstat-label">Skills</span>
+                            </div>
+                            <div class="cstat">
+                                <span class="cstat-val" id="deployments">--</span>
+                                <span class="cstat-label">Deployments</span>
+                            </div>
+                        </div>
+                    </section>
 
-        <!-- Last Deployment -->
-        <section class="deployment-section">
-            <h2 class="section-title">
-                <span class="title-icon">▲</span>
-                Latest Deployment
-            </h2>
-            <div class="deployment-card">
-                <div class="deploy-info">
-                    <span class="deploy-name" id="last-deploy-name">--</span>
-                    <span class="deploy-url" id="last-deploy-url">--</span>
-                </div>
-                <span class="deploy-time" id="last-deploy-time">--</span>
-            </div>
-        </section>
+                    <!-- Metrics Strip -->
+                    <section class="metrics-eink">
+                        <div class="metric-eink" data-metric="tasks">
+                            <div class="me-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    <path d="M9 12l2 2 4-4"/>
+                                </svg>
+                            </div>
+                            <div class="me-data">
+                                <span class="me-value" id="tasks">--</span>
+                                <span class="me-label">Active Tasks</span>
+                            </div>
+                        </div>
+                        <div class="metric-eink" data-metric="emails-in">
+                            <div class="me-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <div class="me-data">
+                                <span class="me-value" id="emails-in">--</span>
+                                <span class="me-label">Inbox</span>
+                            </div>
+                        </div>
+                        <div class="metric-eink" data-metric="emails-out">
+                            <div class="me-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="22" y1="2" x2="11" y2="13"/>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                </svg>
+                            </div>
+                            <div class="me-data">
+                                <span class="me-value" id="emails-out">--</span>
+                                <span class="me-label">Sent</span>
+                            </div>
+                        </div>
+                        <div class="metric-eink" data-metric="subdomains">
+                            <div class="me-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="2" y1="12" x2="22" y2="12"/>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                </svg>
+                            </div>
+                            <div class="me-data">
+                                <span class="me-value" id="subdomains">--</span>
+                                <span class="me-label">Domains</span>
+                            </div>
+                        </div>
+                    </section>
 
-        <!-- Footer Controls -->
-        <footer class="dashboard-footer">
-            <div class="footer-info">
-                <span class="version">TARS v2.0.1 // Build 2026.01.30</span>
-                <span class="last-sync" id="last-sync">Last sync: Never</span>
+                    <!-- System Status Matrix -->
+                    <section class="system-eink">
+                        <h2 class="section-title-eink">
+                            <span class="sti-icon">◈</span>
+                            SYSTEM STATUS
+                        </h2>
+                        <div class="status-matrix" id="system-status">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </section>
+
+                    <!-- Live Operations -->
+                    <section class="ops-eink">
+                        <h2 class="section-title-eink">
+                            <span class="sti-icon">⟳</span>
+                            LIVE OPERATIONS
+                        </h2>
+                        <div class="ops-grid-eink">
+                            <div class="ops-card-eink">
+                                <h3>Active Jobs</h3>
+                                <div class="ops-list" id="active-jobs">
+                                    <!-- Dynamically populated -->
+                                </div>
+                            </div>
+                            <div class="ops-card-eink">
+                                <h3>System Log</h3>
+                                <div class="ops-list log-list" id="recent-logs">
+                                    <!-- Dynamically populated -->
+                                </div>
+                            </div>
+                            <div class="ops-card-eink">
+                                <h3>Recent Memories</h3>
+                                <div class="ops-list mem-list" id="recent-memories">
+                                    <!-- Dynamically populated -->
+                                </div>
+                            </div>
+                            <div class="ops-card-eink">
+                                <h3>Resources</h3>
+                                <div class="ops-list res-list" id="system-resources">
+                                    <!-- Dynamically populated -->
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Integration Panel -->
+                    <section class="integration-eink">
+                        <h2 class="section-title-eink">
+                            <span class="sti-icon">◆</span>
+                            INTEGRATIONS
+                        </h2>
+                        <div class="int-grid" id="integration-status">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </section>
+
+                    <!-- Command History -->
+                    <section class="commands-eink">
+                        <h2 class="section-title-eink">
+                            <span class="sti-icon">▶</span>
+                            COMMAND HISTORY
+                        </h2>
+                        <div class="cmd-list" id="recent-commands">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </section>
+
+                    <!-- Activity Stream -->
+                    <section class="activity-eink">
+                        <h2 class="section-title-eink">
+                            <span class="sti-icon">◈</span>
+                            ACTIVITY STREAM
+                        </h2>
+                        <div class="act-list" id="activity">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </section>
+
+                    <!-- Latest Deployment -->
+                    <section class="deploy-eink">
+                        <h2 class="section-title-eink">
+                            <span class="sti-icon">▲</span>
+                            LATEST DEPLOYMENT
+                        </h2>
+                        <div class="deploy-card-eink">
+                            <div class="deploy-info-eink">
+                                <span class="deploy-name" id="last-deploy-name">--</span>
+                                <span class="deploy-meta" id="last-deploy-meta">--</span>
+                            </div>
+                            <span class="deploy-time" id="last-deploy-time">--</span>
+                        </div>
+                    </section>
+
+                    <!-- Footer / Control Bar -->
+                    <footer class="footer-eink">
+                        <div class="footer-left">
+                            <span class="fw-version">Firmware v2.1.0-eink</span>
+                            <span class="refresh-indicator" id="refresh-indicator">
+                                <span class="ri-dot"></span>
+                                <span id="last-sync">Sync: Never</span>
+                            </span>
+                        </div>
+                        <div class="footer-center">
+                            <span class="ink-logo">e•ink</span>
+                        </div>
+                        <div class="footer-right">
+                            <button class="btn-eink" id="refresh-btn" onclick="manualRefresh()">
+                                <svg class="refresh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10"/>
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                                </svg>
+                                REFRESH
+                            </button>
+                        </div>
+                    </footer>
+
+                </div><!-- /dashboard -->
+
+            </div><!-- /display-area -->
+
+            <!-- Bezel Bottom -->
+            <div class="bezel-bottom">
+                <span class="bezel-left">DISPLAY PORT: ACTIVE</span>
+                <span class="bezel-center">TARS COMMAND SYSTEM</span>
+                <span class="bezel-right" id="page-number">PAGE 1 OF 1</span>
             </div>
-            <button class="btn btn-refresh" id="refresh-btn" onclick="manualRefresh()">
-                <span class="refresh-icon">↻</span>
-                SYNC NOW
-            </button>
-        </footer>
-    </div>
+        </div><!-- /bezel -->
+    </div><!-- /eink-frame -->
+
+    <!-- Refresh Sound (optional, muted by default) -->
+    <audio id="refresh-sound" preload="auto" muted>
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbqWEpKj+ozNqLUEhIgZ" type="audio/wav">
+    </audio>
 
     <script src="js/dashboard.js"></script>
 </body>
